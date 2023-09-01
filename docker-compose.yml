@@ -15,6 +15,27 @@ services:
         target: /var/www/html
     networks:
       - laravelnet
+  # web Service
+  app:
+    container_name: app-l
+    labels:
+      ofelia.enabled: "true"
+    build:
+      context: ./etc/app
+      dockerfile: Dockerfile
+      args:
+        user: nima
+        uid: 1000
+    restart: always
+    volumes:
+      - type: bind
+        source: ./src/backend
+        target: /var/www/html
+      - type: bind
+        source: ./etc/app/local.ini
+        target: /usr/local/etc/php/conf.d/local.ini
+    networks:
+      - laravelnet
 networks:
   laravelnet:
     driver: bridge
